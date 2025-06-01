@@ -216,6 +216,11 @@ namespace Quan_Ly_Thu_Vien_BTL_NET.Views
             ((System.ComponentModel.ISupportInitialize)dataGridViewReaders).EndInit();
             ResumeLayout(false);
             PerformLayout();
+            btnAdd.Click += btnAdd_Click;
+            btnUpdate.Click += btnUpdate_Click;
+            btnDelete.Click += btnDelete_Click;
+            dataGridViewReaders.SelectionChanged += dataGridViewReaders_SelectionChanged;
+            txtSearch.TextChanged += txtSearch_TextChanged;
 
         }
 
@@ -269,7 +274,8 @@ namespace Quan_Ly_Thu_Vien_BTL_NET.Views
                 };
 
                 _viewModel.AddReader(reader);
-                MessageBox.Show("Thêm độc giả thành công!");
+                BindData();
+            MessageBox.Show("Thêm độc giả thành công!");
             }
 
             private void btnUpdate_Click(object sender, EventArgs e)
@@ -297,7 +303,8 @@ namespace Quan_Ly_Thu_Vien_BTL_NET.Views
                         _viewModel.DeleteReader(selectedReader.ReaderId);
                     }
                 }
-            }
+            BindData();
+        }
 
             private void txtSearch_TextChanged(object sender, EventArgs e)
             {

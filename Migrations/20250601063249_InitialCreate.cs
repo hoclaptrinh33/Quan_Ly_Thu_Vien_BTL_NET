@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Quan_Ly_Thu_Vien_BTL_NET.Migrations
 {
     /// <inheritdoc />
-    public partial class ThuVienDB : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -66,10 +66,8 @@ namespace Quan_Ly_Thu_Vien_BTL_NET.Migrations
                     Author = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     Publisher = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     CategoryId = table.Column<int>(type: "int", nullable: false),
-                    Keywords = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Location = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    BarcodeOrRFID = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false)
+                    Quantity = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -83,7 +81,7 @@ namespace Quan_Ly_Thu_Vien_BTL_NET.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "BorrowRecords",
+                name: "Borrow",
                 columns: table => new
                 {
                     BorrowId = table.Column<int>(type: "int", nullable: false)
@@ -98,42 +96,15 @@ namespace Quan_Ly_Thu_Vien_BTL_NET.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BorrowRecords", x => x.BorrowId);
+                    table.PrimaryKey("PK_Borrow", x => x.BorrowId);
                     table.ForeignKey(
-                        name: "FK_BorrowRecords_Books_BookId",
+                        name: "FK_Borrow_Books_BookId",
                         column: x => x.BookId,
                         principalTable: "Books",
                         principalColumn: "BookId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_BorrowRecords_Readers_ReaderId",
-                        column: x => x.ReaderId,
-                        principalTable: "Readers",
-                        principalColumn: "ReaderId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Reservations",
-                columns: table => new
-                {
-                    ReservationId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ReaderId = table.Column<int>(type: "int", nullable: false),
-                    BookId = table.Column<int>(type: "int", nullable: false),
-                    ReservationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Reservations", x => x.ReservationId);
-                    table.ForeignKey(
-                        name: "FK_Reservations_Books_BookId",
-                        column: x => x.BookId,
-                        principalTable: "Books",
-                        principalColumn: "BookId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Reservations_Readers_ReaderId",
+                        name: "FK_Borrow_Readers_ReaderId",
                         column: x => x.ReaderId,
                         principalTable: "Readers",
                         principalColumn: "ReaderId",
@@ -146,23 +117,13 @@ namespace Quan_Ly_Thu_Vien_BTL_NET.Migrations
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_BorrowRecords_BookId",
-                table: "BorrowRecords",
+                name: "IX_Borrow_BookId",
+                table: "Borrow",
                 column: "BookId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_BorrowRecords_ReaderId",
-                table: "BorrowRecords",
-                column: "ReaderId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Reservations_BookId",
-                table: "Reservations",
-                column: "BookId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Reservations_ReaderId",
-                table: "Reservations",
+                name: "IX_Borrow_ReaderId",
+                table: "Borrow",
                 column: "ReaderId");
         }
 
@@ -170,10 +131,7 @@ namespace Quan_Ly_Thu_Vien_BTL_NET.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "BorrowRecords");
-
-            migrationBuilder.DropTable(
-                name: "Reservations");
+                name: "Borrow");
 
             migrationBuilder.DropTable(
                 name: "SystemConfigs");

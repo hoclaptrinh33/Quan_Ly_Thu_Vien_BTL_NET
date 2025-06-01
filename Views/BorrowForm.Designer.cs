@@ -98,6 +98,7 @@ namespace Quan_Ly_Thu_Vien_BTL_NET.Views
                 ReadOnly = true,
                 SelectionMode = DataGridViewSelectionMode.FullRowSelect
             };
+            
 
             // Thêm controls vào form
             this.Controls.Add(lblReader);
@@ -159,6 +160,8 @@ namespace Quan_Ly_Thu_Vien_BTL_NET.Views
                 dgvBorrowRecords.Columns["FineAmount"].HeaderText = "Tiền phạt";
                 dgvBorrowRecords.Columns["IsRenewed"].HeaderText = "Đã gia hạn";
             }
+
+
 
             UpdateDueDate();
         }
@@ -311,6 +314,8 @@ namespace Quan_Ly_Thu_Vien_BTL_NET.Views
                 dgvBorrowRecords.Columns["FineAmount"].HeaderText = "Tiền phạt";
                 dgvBorrowRecords.Columns["IsRenewed"].HeaderText = "Đã gia hạn";
             }
+
+
         }
 
 

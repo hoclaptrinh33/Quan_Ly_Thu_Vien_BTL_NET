@@ -125,7 +125,22 @@ namespace Quan_Ly_Thu_Vien_BTL_NET.ViewModels
             if (borrow.ReturnDate != null)
                 throw new InvalidOperationException("Sách đã được trả.");
 
-            _borrowRepository.MarkAsReturned(borrowId);
+            borrow.ReturnDate = DateTime.Now;
+
+            // Tính số ngày quá hạn
+            int overdueDays = (borrow.ReturnDate.Value - borrow.DueDate).Days;
+
+            if (overdueDays > 0)
+            {
+                borrow.FineAmount = overdueDays * _config.FinePerDay;
+            }
+            else
+            {
+                borrow.FineAmount = 0;
+            }
+
+            // Cập nhật bản ghi mượn
+            _borrowRepository.Update(borrow);
 
             // Tăng số lượng sách sau khi trả
             var book = Books.FirstOrDefault(b => b.BookId == borrow.BookId);
@@ -137,6 +152,7 @@ namespace Quan_Ly_Thu_Vien_BTL_NET.ViewModels
 
             Refresh();
         }
+
 
         public void RenewBook(int borrowId)
         {

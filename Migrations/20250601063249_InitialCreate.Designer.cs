@@ -12,8 +12,8 @@ using Quan_Ly_Thu_Vien_BTL_NET.Data;
 namespace Quan_Ly_Thu_Vien_BTL_NET.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250428162654_ThuVienDB")]
-    partial class ThuVienDB
+    [Migration("20250601063249_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -38,17 +38,8 @@ namespace Quan_Ly_Thu_Vien_BTL_NET.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<string>("BarcodeOrRFID")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
-
-                    b.Property<string>("Keywords")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Location")
                         .IsRequired()
@@ -60,9 +51,8 @@ namespace Quan_Ly_Thu_Vien_BTL_NET.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -76,7 +66,7 @@ namespace Quan_Ly_Thu_Vien_BTL_NET.Migrations
                     b.ToTable("Books");
                 });
 
-            modelBuilder.Entity("Quan_Ly_Thu_Vien_BTL_NET.Models.BorrowRecord", b =>
+            modelBuilder.Entity("Quan_Ly_Thu_Vien_BTL_NET.Models.Borrow", b =>
                 {
                     b.Property<int>("BorrowId")
                         .ValueGeneratedOnAdd()
@@ -111,7 +101,7 @@ namespace Quan_Ly_Thu_Vien_BTL_NET.Migrations
 
                     b.HasIndex("ReaderId");
 
-                    b.ToTable("BorrowRecords");
+                    b.ToTable("Borrow");
                 });
 
             modelBuilder.Entity("Quan_Ly_Thu_Vien_BTL_NET.Models.Category", b =>
@@ -168,32 +158,6 @@ namespace Quan_Ly_Thu_Vien_BTL_NET.Migrations
                     b.ToTable("Readers");
                 });
 
-            modelBuilder.Entity("Quan_Ly_Thu_Vien_BTL_NET.Models.Reservation", b =>
-                {
-                    b.Property<int>("ReservationId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReservationId"));
-
-                    b.Property<int>("BookId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ReaderId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("ReservationDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("ReservationId");
-
-                    b.HasIndex("BookId");
-
-                    b.HasIndex("ReaderId");
-
-                    b.ToTable("Reservations");
-                });
-
             modelBuilder.Entity("Quan_Ly_Thu_Vien_BTL_NET.Models.SystemConfig", b =>
                 {
                     b.Property<int>("ConfigId")
@@ -227,7 +191,7 @@ namespace Quan_Ly_Thu_Vien_BTL_NET.Migrations
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("Quan_Ly_Thu_Vien_BTL_NET.Models.BorrowRecord", b =>
+            modelBuilder.Entity("Quan_Ly_Thu_Vien_BTL_NET.Models.Borrow", b =>
                 {
                     b.HasOne("Quan_Ly_Thu_Vien_BTL_NET.Models.Book", "Book")
                         .WithMany("BorrowRecords")
@@ -237,25 +201,6 @@ namespace Quan_Ly_Thu_Vien_BTL_NET.Migrations
 
                     b.HasOne("Quan_Ly_Thu_Vien_BTL_NET.Models.Reader", "Reader")
                         .WithMany("BorrowRecords")
-                        .HasForeignKey("ReaderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Book");
-
-                    b.Navigation("Reader");
-                });
-
-            modelBuilder.Entity("Quan_Ly_Thu_Vien_BTL_NET.Models.Reservation", b =>
-                {
-                    b.HasOne("Quan_Ly_Thu_Vien_BTL_NET.Models.Book", "Book")
-                        .WithMany("Reservations")
-                        .HasForeignKey("BookId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Quan_Ly_Thu_Vien_BTL_NET.Models.Reader", "Reader")
-                        .WithMany("Reservations")
                         .HasForeignKey("ReaderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -268,8 +213,6 @@ namespace Quan_Ly_Thu_Vien_BTL_NET.Migrations
             modelBuilder.Entity("Quan_Ly_Thu_Vien_BTL_NET.Models.Book", b =>
                 {
                     b.Navigation("BorrowRecords");
-
-                    b.Navigation("Reservations");
                 });
 
             modelBuilder.Entity("Quan_Ly_Thu_Vien_BTL_NET.Models.Category", b =>
@@ -280,8 +223,6 @@ namespace Quan_Ly_Thu_Vien_BTL_NET.Migrations
             modelBuilder.Entity("Quan_Ly_Thu_Vien_BTL_NET.Models.Reader", b =>
                 {
                     b.Navigation("BorrowRecords");
-
-                    b.Navigation("Reservations");
                 });
 #pragma warning restore 612, 618
         }
